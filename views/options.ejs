@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Options</title>
+</head>
+<body>
+    <h1>Select Options for Data Analysis</h1>
+    <form action="/visualize" method="POST">
+        <h2>Statistics</h2>
+        <% if (stats) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Sum</th>
+                        <th>Mean</th>
+                        <th>Median</th>
+                        <th>Mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% Object.keys(stats).forEach(column => { %>
+                        <tr>
+                            <td><%= column %></td>
+                            <td><%= stats[column].sum.toFixed(2) %></td>
+                            <td><%= stats[column].mean.toFixed(2) %></td>
+                            <td><%= stats[column].median.toFixed(2) %></td>
+                            <td><%= stats[column].mode %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } %>
+
+        <h2>Visualize Data</h2>
+        <label for="chartType">Choose a chart type:</label>
+        <select id="chartType" name="chartType" required>
+            <option value="bar">Bar Chart</option>
+            <option value="line">Line Chart</option>
+            <option value="pie">Pie Chart</option>
+            <option value="scatter">Scatter Plot</option>
+        </select>
+        <label for="dataColumn">Select Data Column:</label>
+        <select id="dataColumn" name="dataColumn" required>
+            <% if (stats) { %>
+                <% Object.keys(stats).forEach(column => { %>
+                    <option value="<%= column %>"><%= column %></option>
+                <% }); %>
+            <% } %>
+        </select>
+        <button type="submit">Visualize</button>
+    </form>
+</body>
+</html>
